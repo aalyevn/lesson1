@@ -60,6 +60,6 @@ jobs:
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
-            echo '${{ steps.commit.outputs.short }}' > test.txt;
+            echo ${{ steps.commit.outputs.short }} > test.txt;
             docker pull aalyev/web:${{ steps.commit.outputs.short }};
             docker ps;
