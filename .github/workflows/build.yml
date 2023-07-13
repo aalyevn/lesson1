@@ -25,9 +25,12 @@ jobs:
       
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        uses: docker/metadata-action@v4
         with:
           images: aalyev/web
+
+      - id: commit
+        uses: pr-mpt/actions-commit-hash@v2    
       
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -35,7 +38,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: aalyev/web-${{ steps.commit.outputs.short }}
 
   deploy:
     needs: build
@@ -51,5 +54,5 @@ jobs:
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
-            touch test.txt;
-            echo 'asdasd' > test.txt;
+            docker pull aalyev/web-${{ steps.commit.outputs.short }};
+            docker ps;
