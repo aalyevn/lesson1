@@ -47,11 +47,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: aalyev/web
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
 
       - name: Run command on remote server
         uses: D3rHase/ssh-command-action@v0.2.2
@@ -60,6 +60,6 @@ jobs:
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
-            echo ${{ git rev-parse --short HEAD }} > test.txt;
+            echo  $GITHUB_OUTPUT > test.txt;
             docker pull aalyev/web:${{ steps.commit.outputs.short }};
             docker ps;
