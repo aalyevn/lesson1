@@ -51,5 +51,5 @@ jobs:
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
-            touch test.txt
-            echo 'asdasd' > test.txt
+            touch test.txt;
+            echo 'asdasd' > test.txt;
