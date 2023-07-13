@@ -47,6 +47,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: aalyev/web
+
       - name: Run command on remote server
         uses: D3rHase/ssh-command-action@v0.2.2
         with:
