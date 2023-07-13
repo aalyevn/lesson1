@@ -35,7 +35,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ steps.commit.outputs.short }}
+          tags: ${{ steps.meta.outputs.tags }}
 
   deploy:
     needs: push_to_registry
