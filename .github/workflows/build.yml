@@ -40,10 +40,10 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Run command on remote server
         uses: D3rHase/ssh-command-action@v0.2.2
         with:
