@@ -55,5 +55,5 @@ jobs:
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
             echo '${{ steps.commit.outputs.short }}' > test.txt;
-            docker pull aalyev/web-${{ steps.commit.outputs.short }};
+            docker pull aalyev/web:${{ steps.commit.outputs.short }};
             docker ps;
