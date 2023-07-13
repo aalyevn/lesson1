@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  push_to_registry:
+  build:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +38,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
 
   deploy:
-    needs: push_to_registry
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'main'
     steps:
