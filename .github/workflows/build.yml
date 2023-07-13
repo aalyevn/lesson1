@@ -38,7 +38,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: aalyev/web-${{ steps.commit.outputs.short }}
+          tags: aalyev/web:${{ steps.commit.outputs.short }}
 
   deploy:
     needs: build
