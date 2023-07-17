@@ -6,8 +6,6 @@ name: Golang
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -41,8 +39,32 @@ jobs:
           push: true
           tags: aalyev/web:${{ steps.commit.outputs.short }}
 
-  deploy:
+  deploy-BACKEND:
     needs: build
+    runs-on: ubuntu-latest
+    environment: 'dev'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Run command on remote server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            echo  ${{ steps.vars.outputs.sha_short }} > test.txt;
+            docker pull aalyev/web:${{ steps.vars.outputs.sha_short }};
+            docker ps;
+
+  deploy-FRONTEND:
+    needs: build
+    environment: 'dev'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -63,8 +85,9 @@ jobs:
             docker pull aalyev/web:${{ steps.vars.outputs.sha_short }};
             docker ps;
 
-  deploy2:
+  deploy-WEBSITE:
     needs: build
+    environment: 'dev'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
