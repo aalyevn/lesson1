@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: 020-manual-input-workflow
+name: BACKEND deploy to DEV server 
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -8,13 +8,24 @@ on:
   workflow_dispatch:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
+  deploy:
+    needs: build
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello Nursultsn!!!"
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Run command on remote server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            cd dev.bootcamp.tentech;
+            find . -type f -exec sed -i "/BACKEND/c BACKEND_COMMIT_HASH=${{ steps.vars.outputs.sha_short }}" {} \;;
+            cat .env
