@@ -1,0 +1,88 @@
+name: Deploy { BACKEND FRONTEND WEBSITE } to DEV server 
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  BACKEND:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        
+      - name: Verify Changed files in backend
+        uses: tj-actions/changed-files@v34
+        id: verify-changed-files-in-backend
+        with:
+          files: |
+              /msdata/**
+              /backend/**
+              /.devops/docker/backend.dockerfile
+
+      - name: Verify Changed files in frontend
+        uses: tj-actions/changed-files@v34
+        id: verify-changed-files-in-frontend
+        with:
+          files: |
+              /msdata/**
+              /frontend/**
+              /.devops/docker/frontend.dockerfile
+
+      - name: Verify Changed files in website
+        uses: tj-actions/changed-files@v34
+        id: verify-changed-files-in-website
+        with:
+          files: |
+              /msdata/**
+              /website/**
+              /.devops/docker/website.dockerfile
+        
+      - name: Deploy BACKEND
+        uses: D3rHase/ssh-command-action@v0.2.2
+        if: steps.verify-changed-files-in-backend.outputs.any_changed == 'true'
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            cd dev.bootcamp.tentech;
+            sed -i "/BACKEND/c BACKEND_COMMIT_HASH=${{ steps.vars.outputs.sha_short }}" .env;
+            docker compose stop rest_api;
+            docker compose rm -f rest_api;
+            docker compose up -d;
+            docker ps -a | grep backend;
+
+      - name: Deploy FRONTEND
+        uses: D3rHase/ssh-command-action@v0.2.2
+        if: steps.verify-changed-files-in-frontend.outputs.any_changed == 'true'
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            cd dev.bootcamp.tentech;
+            sed -i "/FRONTEND/c FRONTEND_COMMIT_HASH=${{ steps.vars.outputs.sha_short }}" .env;
+            docker compose stop web_ui;
+            docker compose rm -f web_ui;
+            docker compose up -d;
+            docker ps -a | grep frontend;      
+
+      - name: Deploy WEBSITE
+        uses: D3rHase/ssh-command-action@v0.2.2
+        if: steps.verify-changed-files-in-website.outputs.any_changed == 'true'
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            cd dev.bootcamp.tentech;
+            sed -i "/WEBSITE/c WEBSITE_COMMIT_HASH=${{ steps.vars.outputs.sha_short }}" .env;
+            docker compose stop frontend;
+            docker compose rm -f frontend;
+            docker compose up -d;
+            docker ps -a | grep frontend;            
