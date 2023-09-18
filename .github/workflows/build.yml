@@ -26,15 +26,4 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: aalyev/web
-
-      - id: commit
-        uses: pr-mpt/actions-commit-hash@v2    
-      
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: aalyev/web:${{ steps.commit.outputs.short }}
+          exec: curl -s -S --user '${{ secrets.USERNAME }}:${{ secrets.PASSWORD }}' -L -O 'https://git.dev.bildungsraum.de/NBP/integration-release/archive/refs/tags/MVP_0_0_1.zip' && unzip MVP_0_0_1.zip && ls -la
