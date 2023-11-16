@@ -18,5 +18,6 @@ jobs:
       
       - name: Test echo
         run: |
+            ls -la
             echo ${{ secrets.BACKLANUES }} | tr -d '\r' > .devops/helm/uat/back.values.yaml
             cat .devops/helm/uat/back.values.yaml
