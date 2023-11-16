@@ -18,7 +18,7 @@ jobs:
       
       - name: Test echo
         env: 
-          TESTTT: ${{ secrets.BACKLANUES }}
+          TESTTT: ${{ secrets.UATBACKENDVALUES }}
         run: |
             echo "$TESTTT"  > back.values.yaml
             cat back.values.yaml
