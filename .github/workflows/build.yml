@@ -15,4 +15,8 @@ jobs:
       - name: Build
         run: ls /Applications
       - name: Run tests
-        run: xcodebuild -version
+        run: |
+            sudo xcode-select --switch /Applications/Xcode_15.0.1.app
+            xcodebuild -runFirstLaunch
+            gem install fastlane
+            xcodebuild -version
