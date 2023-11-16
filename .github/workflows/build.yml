@@ -20,6 +20,6 @@ jobs:
         env: 
           TESTTT: ${{ secrets.BACKLANUES }}
         run: |
-            echo ${{ secrets.BACKLANUES }}  > back.values.yaml
+            echo $TESTTT  > back.values.yaml
             cat back.values.yaml
             ls -la
