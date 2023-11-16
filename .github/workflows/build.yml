@@ -34,4 +34,5 @@ jobs:
             pod install 
       - name: Run Fastlane
         run: |
+            cd /Users/runner/work/lesson1/lesson1/msk-notes2_0-ios
             fastlane build_and_upload
