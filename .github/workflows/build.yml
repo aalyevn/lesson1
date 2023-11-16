@@ -6,20 +6,13 @@ name: Golang
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
 
 jobs:
   build:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-      
-      - name: Test echo
-        env: 
-          TESTTT: ${{ secrets.UATBACKENDVALUES }}
-        run: |
-            echo "$TESTTT"  > back.values.yaml
-            cat back.values.yaml
-            ls -la
+      - uses: actions/checkout@v2
+      - name: Build
+        run: ls /Applications
+      - name: Run tests
+        run: xcodebuild -version
