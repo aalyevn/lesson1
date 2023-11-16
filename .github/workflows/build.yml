@@ -28,4 +28,10 @@ jobs:
             git checkout fastlanedone
             pwd
             ls -la
-          
+      - name: Pod install
+        run: |
+            cd /Users/runner/work/lesson1/lesson1/msk-notes2_0-ios
+            pod install 
+      - name: Run Fastlane
+        run: |
+            fastlane build_and_upload
