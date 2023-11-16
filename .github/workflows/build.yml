@@ -20,3 +20,12 @@ jobs:
             xcodebuild -runFirstLaunch
             gem install fastlane
             xcodebuild -version
+      - name: git clone 
+        run: |
+            git clone https://it:zm7x5q6edr7qkbq6hacxk7zdtenidcjson3zsr3yupsdylhoz6bq@dev.azure.com/ArtSparrow/Smart/_git/msk-notes-iOS-SDK
+            git clone https://it:zm7x5q6edr7qkbq6hacxk7zdtenidcjson3zsr3yupsdylhoz6bq@dev.azure.com/ArtSparrow/Smart/_git/msk-notes2_0-ios
+            cd msk-notes2_0-ios
+            git checkout fastlanedone
+            pwd
+            ls -la
+          
