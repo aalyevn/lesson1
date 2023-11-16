@@ -22,8 +22,8 @@ jobs:
             xcodebuild -version
       - name: git clone 
         run: |
-            git clone https://it:ufgmtzal7o4kxpgzc6vplkt2bxtgph7vtcprujbucaaooloxlama@dev.azure.com/ArtSparrow/Smart/_git/msk-notes-iOS-SDK
-            git clone https://it:ufgmtzal7o4kxpgzc6vplkt2bxtgph7vtcprujbucaaooloxlama@dev.azure.com/ArtSparrow/Smart/_git/msk-notes2_0-ios
+            git clone https://${{ secret.AZURETOKEN }}@dev.azure.com/ArtSparrow/Smart/_git/msk-notes-iOS-SDK
+            git clone https://${{ secret.AZURETOKEN }}@dev.azure.com/ArtSparrow/Smart/_git/msk-notes2_0-ios
             cd msk-notes2_0-ios
             git checkout fastlanedone
             pwd
