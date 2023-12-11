@@ -27,12 +27,16 @@ jobs:
         run: |
           GOOS=linux GOARCH=amd64 go build -o envmake.linux.amd64 ./envmake/main.go
           GOOS=linux GOARCH=arm64 go build -o envmake.linux.arm64 ./envmake/main.go
+          tar -czvf envmake.tar.gz envmake.linux*
           GOOS=linux GOARCH=amd64 go build -o envsubst.linux.amd64 ./envsubst/main.go
           GOOS=linux GOARCH=arm64 go build -o envsubst.linux.arm64 ./envsubst/main.go
+          tar -czvf envsubst.tar.gz envmake.linux*
           GOOS=linux GOARCH=amd64 go build -o set2secret.linux.amd64 ./set2secret/main.go
           GOOS=linux GOARCH=arm64 go build -o set2secret.linux.arm64 ./set2secret/main.go
+          tar -czvf set2secret.tar.gz set2secret.linux*
           GOOS=linux GOARCH=amd64 go build -o setsubst.linux.amd64 ./setsubst/main.go
           GOOS=linux GOARCH=arm64 go build -o setsubst.linux.arm64 ./setsubst/main.go
+          tar -czvf setsubst.tar.gz setsubst.linux*
 
       - name: Create Release
         id: create_release
@@ -55,8 +59,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./envmake.linux.amd64
-          asset_name: envmake.linux.amd64
+          asset_path: ./envmake.tar.gz
+          asset_name: envmake.tar.gz
           asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (linux/arm64)
@@ -65,8 +69,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./envmake.linux.arm64
-          asset_name: envmake.linux.arm64
+          asset_path: ./envsubst.tar.gz
+          asset_name: envsubst.tar.gz
           asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (linux/amd64)
@@ -75,8 +79,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./envsubst.linux.amd64
-          asset_name: envsubst.linux.amd64
+          asset_path: ./set2secret.tar.gz
+          asset_name: set2secret.tar.gz
           asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (linux/arm64)
@@ -85,46 +89,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./envsubst.linux.arm64
-          asset_name: envsubst.linux.arm64
+          asset_path: ./setsubst.tar.gz
+          asset_name: setsubst.tar.gz
           asset_content_type: application/octet-stream
 
-      - name: Upload Release Asset (linux/amd64)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./set2secret.linux.amd64
-          asset_name: set2secret.linux.amd64
-          asset_content_type: application/octet-stream
-
-      - name: Upload Release Asset (linux/arm64)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./set2secret.linux.arm64
-          asset_name: set2secret.linux.arm64
-          asset_content_type: application/octet-stream
-
-      - name: Upload Release Asset (linux/amd64)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./setsubst.linux.amd64
-          asset_name: setsubst.linux.amd64
-          asset_content_type: application/octet-stream
-
-      - name: Upload Release Asset (linux/arm64)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./setsubst.linux.arm64
-          asset_name: setsubst.linux.arm64
-          asset_content_type: application/octet-stream
