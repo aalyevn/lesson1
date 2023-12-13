@@ -37,10 +37,9 @@ jobs:
 
       - name: Build cli_commander_web_api
         run: |
-          cd cli_commander_web_api
-          GOOS=linux GOARCH=amd64 go build -o cli_commander_web_api.linux.amd64 ./main/main.go
-          GOOS=linux GOARCH=arm64 go build -o cli_commander_web_api.linux.arm64 ./main/main.go
-
+          ls -la
+          pwd 
+          
       - name: Build release-harvester
         run: |
           cd release-harvester
