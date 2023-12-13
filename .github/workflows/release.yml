@@ -23,7 +23,7 @@ jobs:
         with:
           go-version: 1.21.0
 
-      - name: Build
+      - name: Build envsubst
         run: |
           cd envsubst
           GOOS=linux GOARCH=amd64 go build -o envmake.linux.amd64 ./envmake/main.go
@@ -34,16 +34,28 @@ jobs:
           GOOS=linux GOARCH=arm64 go build -o set2secret.linux.arm64 ./set2secret/main.go
           GOOS=linux GOARCH=amd64 go build -o setsubst.linux.amd64 ./setsubst/main.go
           GOOS=linux GOARCH=arm64 go build -o setsubst.linux.arm64 ./setsubst/main.go
-          cd ../cli-commander-web-api
+
+      - name: Build cli_commander_web_api
+        run: |
+          cd cli_commander_web_api
           GOOS=linux GOARCH=amd64 go build -o cli_commander_web_api.linux.amd64 ./main/main.go
           GOOS=linux GOARCH=arm64 go build -o cli_commander_web_api.linux.arm64 ./main/main.go
-          cd ../release-harvester
+
+      - name: Build release-harvester
+        run: |
+          cd release-harvester
           GOOS=linux GOARCH=amd64 go build -o release-harvester.linux.amd64 ./main/main.go
           GOOS=linux GOARCH=arm64 go build -o release-harvester.linux.arm64 ./main/main.go
-          cd ../release-notes-publisher
+
+      - name: Build release-notes-publisher
+        run: |
+          cd release-notes-publisher
           GOOS=linux GOARCH=amd64 go build -o release-notes-publisher.linux.amd64 ./main.go
           GOOS=linux GOARCH=arm64 go build -o release-notes-publisher.linux.arm64 ./main.go
-          cd ../semver
+
+      - name: Build semver
+        run: |
+          cd semver
           GOOS=linux GOARCH=amd64 go build -o semver.linux.amd64 ./main/main.go
           GOOS=linux GOARCH=arm64 go build -o semver.linux.arm64 ./main/main.go
 
