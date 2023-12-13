@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'tools-v*.*.*'
+      - 'toolsv*.*.*'
 
 jobs:
   build-and-release:
@@ -34,6 +34,18 @@ jobs:
           GOOS=linux GOARCH=arm64 go build -o set2secret.linux.arm64 ./set2secret/main.go
           GOOS=linux GOARCH=amd64 go build -o setsubst.linux.amd64 ./setsubst/main.go
           GOOS=linux GOARCH=arm64 go build -o setsubst.linux.arm64 ./setsubst/main.go
+          cd ../cli-commander-web-api
+          GOOS=linux GOARCH=amd64 go build -o cli_commander_web_api.linux.amd64 ./main/main.go
+          GOOS=linux GOARCH=arm64 go build -o cli_commander_web_api.linux.arm64 ./main/main.go
+          cd ../release-harvester
+          GOOS=linux GOARCH=amd64 go build -o release-harvester.linux.amd64 ./main/main.go
+          GOOS=linux GOARCH=arm64 go build -o release-harvester.linux.arm64 ./main/main.go
+          cd ../release-notes-publisher
+          GOOS=linux GOARCH=amd64 go build -o release-notes-publisher.linux.amd64 ./main.go
+          GOOS=linux GOARCH=arm64 go build -o release-notes-publisher.linux.arm64 ./main.go
+          cd ../semver
+          GOOS=linux GOARCH=amd64 go build -o semver.linux.amd64 ./main/main.go
+          GOOS=linux GOARCH=arm64 go build -o semver.linux.arm64 ./main/main.go
 
       - name: Create Release
         id: create_release
@@ -49,6 +61,14 @@ jobs:
       - name: Extract tag name
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - &upload
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_content_type: application/octet-stream  
 
       - name: Upload Release Asset (linux/amd64)
         uses: actions/upload-release-asset@v1
@@ -128,4 +148,84 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./envsubst/setsubst.linux.arm64
           asset_name: setsubst.linux.arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (linux/amd64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./cli_commander_web_api/cli_commander_web_api.linux.amd64
+          asset_name: cli_commander_web_api.linux.amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (linux/arm64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./cli_commander_web_api/cli_commander_web_api.linux.arm64
+          asset_name: cli_commander_web_api.linux.arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (linux/amd64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-harvester/release-harvester.linux.amd64
+          asset_name: release-harvester.linux.amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (linux/arm64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-harvester/release-harvester.linux.arm64
+          asset_name: release-harvester.linux.arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (linux/amd64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-notes-publisher/release-notes-publisher.linux.amd64
+          asset_name: release-notes-publisher.linux.amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (linux/arm64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-notes-publisher/release-notes-publisher.linux.arm64
+          asset_name: release-notes-publisher.linux.arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (linux/amd64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./semver/semver.linux.amd64
+          asset_name: semver.linux.amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset (linux/arm64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./semver/semver.linux.arm64
+          asset_name: semver.linux.arm64
           asset_content_type: application/octet-stream
