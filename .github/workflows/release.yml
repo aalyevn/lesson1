@@ -35,11 +35,12 @@ jobs:
           GOOS=linux GOARCH=amd64 go build -o setsubst.linux.amd64 ./setsubst/main.go
           GOOS=linux GOARCH=arm64 go build -o setsubst.linux.arm64 ./setsubst/main.go
 
-      - name: Build cli_commander_web_api
+      - name: Build cli-commander-web-api
         run: |
-          ls -la
-          pwd 
-          
+          cd cli-commander-web-api
+          GOOS=linux GOARCH=amd64 go build -o cli_commander_web_api.linux.amd64 ./main/main.go
+          GOOS=linux GOARCH=arm64 go build -o cli_commander_web_api.linux.arm64 ./main/main.go
+
       - name: Build release-harvester
         run: |
           cd release-harvester
@@ -159,7 +160,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cli_commander_web_api/cli_commander_web_api.linux.amd64
+          asset_path: ./cli-commander-web-api/cli_commander_web_api.linux.amd64
           asset_name: cli_commander_web_api.linux.amd64
           asset_content_type: application/octet-stream
 
@@ -169,7 +170,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cli_commander_web_api/cli_commander_web_api.linux.arm64
+          asset_path: ./cli-commander-web-api/cli_commander_web_api.linux.arm64
           asset_name: cli_commander_web_api.linux.arm64
           asset_content_type: application/octet-stream
 
