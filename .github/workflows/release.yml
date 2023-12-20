@@ -40,17 +40,6 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
 
-      - name: "[ INFO ] Build information"
-        run: |
-          java -version
-          mvn -version
-          google-chrome --version
-          helm version
-          echo Deployment to ${{ inputs.environment }}
-          echo Tests ${{ inputs.choice }}
-          echo GitRef ${{ github.ref }}
-   
-      
       - name: "[ INFO ] Print build info"
         uses: ./.github/actions/build_info
         with:
