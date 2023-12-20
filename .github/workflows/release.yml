@@ -30,16 +30,14 @@ on:
           - ALL
         default: 'ALL'
 
-permissions:
-  contents: "read"
-  id-token: "write"
-
 jobs:
   rollout_release:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: "[ INFO ] Print build info"
         uses: ./.github/actions/build_info
         with:
