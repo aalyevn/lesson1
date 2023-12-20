@@ -1,93 +1,24 @@
-name: Release
-
-on:
-  push:
-    tags:
-      - 'toolsv*.*.*'
-
-jobs:
-  build-and-release:
-    name: Build and Release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      repository-projects: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.21.0
-
-      - name: Build envsubst
-        run: |
-          cd envsubst
-          GOOS=linux GOARCH=amd64 go build -o envmake.linux.amd64 ./envmake/main.go
-          GOOS=linux GOARCH=arm64 go build -o envmake.linux.arm64 ./envmake/main.go
-          GOOS=linux GOARCH=amd64 go build -o envsubst.linux.amd64 ./envsubst/main.go
-          GOOS=linux GOARCH=arm64 go build -o envsubst.linux.arm64 ./envsubst/main.go
-          GOOS=linux GOARCH=amd64 go build -o set2secret.linux.amd64 ./set2secret/main.go
-          GOOS=linux GOARCH=arm64 go build -o set2secret.linux.arm64 ./set2secret/main.go
-          GOOS=linux GOARCH=amd64 go build -o setsubst.linux.amd64 ./setsubst/main.go
-          GOOS=linux GOARCH=arm64 go build -o setsubst.linux.arm64 ./setsubst/main.go
-
-      - name: Build cli-commander-web-api
-        run: |
-          cd cli-commander-web-api
-          GOOS=linux GOARCH=amd64 go build -o cli_commander_web_api.linux.amd64 ./main/main.go
-          GOOS=linux GOARCH=arm64 go build -o cli_commander_web_api.linux.arm64 ./main/main.go
-
-      - name: Build release-harvester
-        run: |
-          cd release-harvester
-          GOOS=linux GOARCH=amd64 go build -o release-harvester.linux.amd64 ./main/main.go
-          GOOS=linux GOARCH=arm64 go build -o release-harvester.linux.arm64 ./main/main.go
-
-      - name: Build release-notes-publisher
-        run: |
-          cd release-notes-publisher
-          GOOS=linux GOARCH=amd64 go build -o release-notes-publisher.linux.amd64 ./main.go
-          GOOS=linux GOARCH=arm64 go build -o release-notes-publisher.linux.arm64 ./main.go
-
-      - name: Build semver
-        run: |
-          cd semver
-          GOOS=linux GOARCH=amd64 go build -o semver.linux.amd64 ./main/main.go
-          GOOS=linux GOARCH=arm64 go build -o semver.linux.arm64 ./main/main.go
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-      - name: Extract tag name
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}  
-
-      - name: Upload Release Asset (linux/amd64)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: envmake.linux.amd64
-          asset_content_type: application/octet-stream
-          asset_path: |
-            ./envsubst/envmake.linux.amd64
-            ./envsubst/envmake.linux.arm64
-            ./envsubst/envsubst.linux.amd64
-            ./envsubst/envsubst.linux.arm64
-            ./envsubst/set2secret.linux.amd64
-            ./envsubst/set2secret.linux.arm64
-            ./envsubst/setsubst.linux.amd64
-            ./envsubst/setsubst.linux.arm64
+name: 'Build Information'
+description: 'Outputs build environment and system information'
+inputs:
+  environment:
+    description: 'Deployment environment'
+    required: true
+  choice:
+    description: 'Test choice'
+    required: false
+  git_ref:
+    description: 'GitHub reference'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - run: |
+        java -version
+        mvn -version
+        google-chrome --version
+        helm version
+        echo "Deployment to ${{ inputs.environment }}"
+        echo "Tests ${{ inputs.choice }}"
+        echo "GitRef ${{ inputs.git_ref }}"
+      shell: bash
