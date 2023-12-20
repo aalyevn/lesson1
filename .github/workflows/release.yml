@@ -1,15 +1,17 @@
 name: 'Build Information'
 description: 'Outputs build environment and system information'
-inputs:
-  environment:
-    description: 'Deployment environment'
-    required: true
-  choice:
-    description: 'Test choice'
-    required: false
-  git_ref:
-    description: 'GitHub reference'
-    required: true
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+      choice:
+        description: 'Test choice'
+        required: false
+      git_ref:
+        description: 'GitHub reference'
+        required: true
 runs:
   using: 'composite'
   steps:
