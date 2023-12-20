@@ -36,12 +36,15 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
         
-      - name: "[ INFO ] Print build info"
-        uses: ./.github/actions/build_info
-        with:
-          environment: ${{ inputs.environment }}
-          choice: ${{ inputs.choice }}
-          git_ref: ${{ github.ref }}
+      - name: "[ INFO ] Build information"
+        run: |
+          java -version
+          mvn -version
+          google-chrome --version
+          helm version
+          echo Deployment to ${{ inputs.environment }}
+          echo Tests ${{ inputs.choice }}
+          echo GitRef ${{ github.ref }}
      
       - name: Checkout code
         uses: actions/checkout@v2
