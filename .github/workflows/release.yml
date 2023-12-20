@@ -18,17 +18,6 @@ on:
         description: check pods before test
         required: true
         default: false
-      choice:
-        description: Type of Test
-        type: choice
-        required: true
-        options:
-          - REGRESSION
-          - API
-          - SMOKE
-          - UI
-          - ALL
-        default: 'ALL'
 
 jobs:
   rollout_release:
@@ -36,15 +25,12 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
         
-      - name: "[ INFO ] Build information"
-        run: |
-          java -version
-          mvn -version
-          google-chrome --version
-          helm version
-          echo Deployment to ${{ inputs.environment }}
-          echo Tests ${{ inputs.choice }}
-          echo GitRef ${{ github.ref }}
-     
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: "[ INFO ] Print build info"
+        uses: ./.github/actions/build_info
+        with:
+          environment: ${{ inputs.environment }}
+          choice: ${{ inputs.choice }}
+          git_ref: ${{ github.ref }}
