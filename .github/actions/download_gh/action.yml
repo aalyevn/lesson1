@@ -3,6 +3,9 @@ description: 'Outputs build environment and system information'
 runs:
   using: 'composite'
   steps:
+    - env:
+        GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+        GH_ENTERPRISE_HOST: git.dev.bildungsraum.de
     - run: |
         curl -L https://github.com/cli/cli/releases/download/v2.38.0/gh_2.38.0_linux_amd64.tar.gz | tar xz
         mv gh_2.38.0_linux_amd64/bin/gh .

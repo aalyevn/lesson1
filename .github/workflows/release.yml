@@ -37,3 +37,6 @@ jobs:
 
       - name: "[ INFO ] Download and install gh"
         uses: ./.github/actions/download_gh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          GH_ENTERPRISE_HOST: github.com
