@@ -1,26 +1,59 @@
-name: 'Build Information'
-description: 'Outputs build environment and system information'
+name: DEPRECATED Release rollout. Deployment and A-Tests
+
 on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Deployment environment'
+        type: environment
+        description: Select the environment
         required: true
+        default: 'integration'
+      startdeployment:
+        type: boolean
+        description: deploy components
+        required: true
+        default: false
+      checkdeployment:
+        type: boolean
+        description: check pods before test
+        required: true
+        default: false
       choice:
-        description: 'Test choice'
-        required: false
-      git_ref:
-        description: 'GitHub reference'
+        description: Type of Test
+        type: choice
         required: true
-runs:
-  using: 'composite'
-  steps:
-    - run: |
-        java -version
-        mvn -version
-        google-chrome --version
-        helm version
-        echo "Deployment to ${{ inputs.environment }}"
-        echo "Tests ${{ inputs.choice }}"
-        echo "GitRef ${{ inputs.git_ref }}"
-      shell: bash
+        options:
+          - REGRESSION
+          - API
+          - SMOKE
+          - UI
+          - ALL
+        default: 'ALL'
+
+permissions:
+  contents: "read"
+  id-token: "write"
+
+jobs:
+  rollout_release:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+
+      - name: "[ INFO ] Build information"
+        run: |
+          java -version
+          mvn -version
+          google-chrome --version
+          helm version
+          echo Deployment to ${{ inputs.environment }}
+          echo Tests ${{ inputs.choice }}
+          echo GitRef ${{ github.ref }}
+   
+      
+      - name: "[ INFO ] Print build info"
+        uses: ./.github/actions/build_info
+        with:
+          environment: ${{ inputs.environment }}
+          choice: ${{ inputs.choice }}
+          git_ref: ${{ github.ref }}
