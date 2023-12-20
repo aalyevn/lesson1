@@ -1,5 +1,12 @@
 name: 'Build Information'
 description: 'Outputs build environment and system information'
+inputs:
+  github_token:
+    description: 'Deployment environment'
+    required: true
+  gh_enterprise_host:
+    description: 'Test choice'
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -7,5 +14,5 @@ runs:
         curl -L https://github.com/cli/cli/releases/download/v2.38.0/gh_2.38.0_linux_amd64.tar.gz | tar xz
         mv gh_2.38.0_linux_amd64/bin/gh .
         chmod +x gh
-        gh auth login --with-token --hostname "${GH_ENTERPRISE_HOST}" <<< "${GITHUB_TOKEN}"
+        gh auth login --with-token --hostname "${inputs.gh_enterprise_host}" <<< "${inputs.github_token}"
       shell: bash
