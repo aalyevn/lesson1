@@ -1,0 +1,24 @@
+name: 'Build Information'
+description: 'Outputs build environment and system information'
+inputs:
+  environment:
+    description: 'Deployment environment'
+    required: true
+  choice:
+    description: 'Test choice'
+    required: false
+  git_ref:
+    description: 'GitHub reference'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - run: |
+        java -version
+        mvn -version
+        google-chrome --version
+        helm version
+        echo "Deployment to ${{ inputs.environment }}"
+        echo "Tests ${{ inputs.choice }}"
+        echo "GitRef ${{ inputs.git_ref }}"
+      shell: bash
