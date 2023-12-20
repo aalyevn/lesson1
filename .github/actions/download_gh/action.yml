@@ -14,5 +14,5 @@ runs:
         curl -L https://github.com/cli/cli/releases/download/v2.38.0/gh_2.38.0_linux_amd64.tar.gz | tar xz
         mv gh_2.38.0_linux_amd64/bin/gh .
         chmod +x gh
-        gh auth login --with-token --hostname "${inputs.gh_enterprise_host}" <<< "${inputs.github_token}"
+        gh auth login --with-token --hostname ${inputs.gh_enterprise_host} <<< ${inputs.github_token}
       shell: bash
