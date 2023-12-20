@@ -35,8 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
         
       - name: "[ INFO ] Print build info"
         uses: ./.github/actions/build_info
@@ -44,3 +42,6 @@ jobs:
           environment: ${{ inputs.environment }}
           choice: ${{ inputs.choice }}
           git_ref: ${{ github.ref }}
+     
+      - name: Checkout code
+        uses: actions/checkout@v2
