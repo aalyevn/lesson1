@@ -34,9 +34,4 @@ jobs:
           environment: ${{ inputs.environment }}
           choice: ${{ inputs.choice }}
           git_ref: ${{ github.ref }}
-
-      - name: "[ INFO ] Download and install gh"
-        uses: ./.github/actions/download_gh
-        with:
-          github_token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          gh_enterprise_host: 'github.com'
+          backups: 'aalyev'
