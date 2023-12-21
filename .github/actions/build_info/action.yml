@@ -28,5 +28,6 @@ runs:
         export testall=$backups
         echo "test=$test" >> $GITHUB_ENV
         echo "testall=$backups" >> $GITHUB_ENV
+        echo $anistar
       shell: bash
       id: step1
