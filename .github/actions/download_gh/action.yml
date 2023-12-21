@@ -11,7 +11,7 @@ runs:
   using: 'composite'
   steps:
     - run: |
-        echo $test
-        echo $testall
+        echo ${{ steps.step1.outputs.test }}
+        echo ${{ steps.step1.outputs.testall }}
         echo "assssdasdas"
       shell: bash
