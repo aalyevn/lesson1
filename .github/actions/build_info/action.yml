@@ -10,9 +10,6 @@ inputs:
   git_ref:
     description: 'GitHub reference'
     required: true
-  backups:
-    description: 'GitHub reference'
-    required: true  
 runs:
   using: 'composite'
   steps:
