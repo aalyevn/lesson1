@@ -24,4 +24,6 @@ runs:
         cd terraform
         chmod +x script.sh
         ./script.sh
+        test=$backups
+        export testall=$backups
       shell: bash
