@@ -36,3 +36,11 @@ jobs:
           git_ref: ${{ github.ref }}
         env:
           backups: 'aalyev'
+
+      - name: "[ INFO ] Download and install"
+        uses: ./.github/actions/download_gh
+        with:
+          github_token: ${{ inputs.environment }}
+          gh_enterprise_host: ${{ inputs.choice }}
+        env:
+          backups: 'aalyev'
