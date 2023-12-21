@@ -34,4 +34,5 @@ jobs:
           environment: ${{ inputs.environment }}
           choice: ${{ inputs.choice }}
           git_ref: ${{ github.ref }}
+        env:
           backups: 'aalyev'
