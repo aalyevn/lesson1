@@ -26,4 +26,6 @@ runs:
         ./script.sh
         test=$backups
         export testall=$backups
+        echo $test
+        echo $testall
       shell: bash
