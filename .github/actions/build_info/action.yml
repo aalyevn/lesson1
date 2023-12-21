@@ -26,7 +26,7 @@ runs:
         ./script.sh
         test=$backups
         export testall=$backups
-        echo $test
-        echo $testall
+        echo "test=$test" >> $GITHUB_ENV
+        echo "testall=$backups" >> $GITHUB_ENV
       shell: bash
       id: step1
