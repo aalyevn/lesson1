@@ -13,4 +13,5 @@ runs:
     - run: |
         echo $test
         echo $testall
+        echo "assssdasdas"
       shell: bash
