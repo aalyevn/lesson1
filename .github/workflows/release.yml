@@ -17,9 +17,6 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
       
-    - name: Checkout
-      uses: actions/checkout@v2
-        
     - name: Configure kubectl
       run: |-
         gcloud container clusters get-credentials ${{ secrets.NAME_NODES }} --zone ${{ secrets.GCP_ZONE }} --project ${{ secrets.GCP_PROJECT }}
