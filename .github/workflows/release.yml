@@ -19,12 +19,15 @@ jobs:
         
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: 'Install components'
+      run: gcloud components install gke-gcloud-auth-plugin
       
-    - name: Configure kubectl
+    - name: 'Configure kubectl'
       run: |-
         gcloud container clusters get-credentials ${{ secrets.NAME_NODES }} --zone ${{ secrets.GCP_ZONE }} --project ${{ secrets.GCP_PROJECT }}
 
     # Добавьте шаги для сборки и загрузки образа, если это необходимо
 
-    - name: Deploy to GKE
+    - name: 'Deploy to GKE'
       run: kubectl get nodes
