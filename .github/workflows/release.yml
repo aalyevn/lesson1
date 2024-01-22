@@ -1,45 +1,24 @@
-name: DEPRECATED Release rollout. Deployment and A-Tests
-
 on:
   workflow_dispatch:
     inputs:
+      name:
+        type: choice
+        description: Who to greet
+        options: 
+        - monalisa
+        - cschleiden
+      message:
+        required: true
+      use-emoji:
+        type: boolean
+        description: Include 🎉🤣 emojis
       environment:
         type: environment
-        description: Select the environment
-        required: true
-        default: 'integration'
-      startdeployment:
-        type: boolean
-        description: deploy components
-        required: true
-        default: false
-      checkdeployment:
-        type: boolean
-        description: check pods before test
-        required: true
-        default: false
 
 jobs:
-  rollout_release:
+  greet:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    steps:
-        
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: "[ INFO ] Print build info"
-        uses: ./.github/actions/build_info
-        with:
-          environment: ${{ inputs.environment }}
-          choice: ${{ inputs.choice }}
-          git_ref: ${{ github.ref }}
-        env:
-          backups: 'aalyev'
-          anistar: ${{ secrets.SSH_HOST }}
 
-      - name: "[ INFO ] Download and install"
-        uses: ./.github/actions/download_gh
-        with:
-          github_token: ${{ inputs.environment }}
-          gh_enterprise_host: ${{ inputs.choice }}
+    steps:
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", "🥳"]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
