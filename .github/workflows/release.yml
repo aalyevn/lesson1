@@ -28,4 +28,4 @@ jobs:
     # Добавьте шаги для сборки и загрузки образа, если это необходимо
 
     - name: 'Deploy to GKE'
-      run: kubectl get pods -n application
+      run: helm list -A
