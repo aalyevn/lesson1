@@ -1,0 +1,14 @@
+name: Run a step if a secret has been set
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        required: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ inputs.message != '' }}
+        run: echo 'This step will only run if the secret has a value set.'
+      - if: ${{ inputs.message == '' }}
+        run: echo 'This step will only run if the secret does not have a value set.'
