@@ -19,5 +19,4 @@ jobs:
     - name: Fix
       run: |
         cat website.dockerfile
-        echo $URL 
-        echo $UPLOADS
+        envsubst < website.dockerfile
