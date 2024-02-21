@@ -3,12 +3,8 @@ LABEL org.opencontainers.image.authors="d.a.golovachev <d.a.golovachev@gmail.com
 
 RUN apk update && apk add --no-cache git tzdata
 
-ARG API_BASE_URL=$URL
-ARG API_UPLOADS_URL=$UPLOADS
-
-# #ENV
-# ENV API_BASE_URL="${URL}" \
-#     API_UPLOADS_URL="${UPLOADS}"
+ARG API_BASE_URL={{URL}}
+ARG API_UPLOADS_URL={{UPLOADS}}
 
 # Create app directory 
 RUN mkdir -p /usr/src/app
