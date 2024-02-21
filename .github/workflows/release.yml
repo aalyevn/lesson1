@@ -4,11 +4,6 @@ on:
   push:
     branches: ["main"]
 
-
-env:
-  URL: ${{ secrets.URL }}
-  UPLOADS: ${{ secrets.UPLOADS }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,5 +18,9 @@ jobs:
         chmod +x envsubst
         ./envsubst website.dockerfile
         cat website.dockerfile
+      env:
+        URL: ${{ secrets.URL }}
+        UPLOADS: ${{ secrets.UPLOADS }}
+
         
         
