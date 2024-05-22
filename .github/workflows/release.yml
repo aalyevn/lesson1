@@ -11,16 +11,43 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     
-    - name: Fix
-      run: |
-        wget https://github.com/DawnBreather/envsubst/releases/download/v0.0.2/envsubst.linux.amd64
-        mv envsubst.linux.amd64 envsubst
-        chmod +x envsubst
-        ./envsubst website.dockerfile
-        cat website.dockerfile
+    - name: Send Slack notification (start)
+      uses: slackapi/slack-github-action@v1.24.0
+      continue-on-error: true
       env:
-        URL: ${{ secrets.URL }}
-        UPLOADS: ${{ secrets.UPLOADS }}
-
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
+      with:
+        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+        payload: |
+          {
+            "text": "Начало деплоя: $GITHUB_REPOSITORY на ветке $GITHUB_REF"
+          
+    - name: Deploy
+      run: |
+        # Команда для деплоя
+        echo "Deploying your application...
         
-        
+    - name: Send Slack notification (end)
+      if: success()
+      uses: slackapi/slack-github-action@v1.24.0
+      continue-on-error: true
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
+      with:
+        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+        payload: |
+          {
+            "text": "Деплой завершен: $GITHUB_REPOSITORY на ветке $GITHUB_REF"
+          
+    - name: Send Slack notification (failure)
+      if: failure()
+      uses: slackapi/slack-github-action@v1.24.0
+      continue-on-error: true
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
+      with:
+        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+        payload: |
+          {
+            "text": "Ошибка деплоя: $GITHUB_REPOSITORY на ветке $GITHUB_REF"
+          }
