@@ -21,12 +21,13 @@ jobs:
         payload: |
           {
             "text": "Начало деплоя: $GITHUB_REPOSITORY на ветке $GITHUB_REF"
+          }
           
     - name: Deploy
       run: |
         # Команда для деплоя
-        echo "Deploying your application...
-        
+        echo "Deploying your application..."
+
     - name: Send Slack notification (end)
       if: success()
       uses: slackapi/slack-github-action@v1.24.0
@@ -38,6 +39,7 @@ jobs:
         payload: |
           {
             "text": "Деплой завершен: $GITHUB_REPOSITORY на ветке $GITHUB_REF"
+          }
           
     - name: Send Slack notification (failure)
       if: failure()
