@@ -20,7 +20,7 @@ jobs:
         channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
         payload: |
           {
-            "text": "Начало деплоя: $GITHUB_REPOSITORY на ветке $GITHUB_REF"
+            "text": "Начало деплоя: ${{ github.repository }} на ветке ${{ github.ref }}"
           }
           
     - name: Deploy
@@ -38,7 +38,7 @@ jobs:
         channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
         payload: |
           {
-            "text": "Деплой завершен: $GITHUB_REPOSITORY на ветке $GITHUB_REF"
+            "text": "Деплой завершен: ${{ github.repository }} на ветке ${{ github.ref }}"
           }
           
     - name: Send Slack notification (failure)
@@ -51,5 +51,5 @@ jobs:
         channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
         payload: |
           {
-            "text": "Ошибка деплоя: $GITHUB_REPOSITORY на ветке $GITHUB_REF"
+            "text": "Ошибка деплоя: ${{ github.repository }} на ветке ${{ github.ref }}"
           }
