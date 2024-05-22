@@ -20,7 +20,7 @@ jobs:
         channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
         payload: |
           {
-            "text": "Начало деплоя - $(TZ=":Asia/Singapore" date -R|sed 's/.....$//'): ${{ github.repository }} на ветке ${{ github.ref }}"
+            "text": "Начало деплоя: ${{ github.repository }} на ветке ${{ github.ref }}"
           }
           
     - name: Deploy
@@ -38,7 +38,7 @@ jobs:
         channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
         payload: |
           {
-            "text": "Деплой завершен - $(TZ=":Asia/Singapore" date -R|sed 's/.....$//'): ${{ github.repository }} на ветке ${{ github.ref }}"
+            "text": "Деплой завершен: ${{ github.repository }} на ветке ${{ github.ref }}"
           }
           
     - name: Send Slack notification (failure)
@@ -51,5 +51,5 @@ jobs:
         channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
         payload: |
           {
-            "text": "Ошибка деплоя - $(TZ=":Asia/Singapore" date -R|sed 's/.....$//'): ${{ github.repository }} на ветке ${{ github.ref }}"
+            "text": "Ошибка деплоя: ${{ github.repository }} на ветке ${{ github.ref }}"
           }
