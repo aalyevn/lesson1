@@ -31,6 +31,8 @@ jobs:
 
     - name: Build and push
       uses: docker/build-push-action@v5
+      env:
+        GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT }}      
       with:
         file: .
         push: true
