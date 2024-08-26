@@ -31,7 +31,7 @@ jobs:
     - name: Configure Docker
       run: |-
         set -x
-        gcloud auth configure-docker us-central1-docker.pkg.dev        
+        echo '${{ secrets.PRIVATE_REGISTRY }}' | awk -F/ '{print $1}' | gcloud auth configure-docker -q      
 
     - name: Build and push
       uses: docker/build-push-action@v5      
