@@ -1,56 +1,29 @@
-name: Deploy to GKE
+name: Deploy Nginx
 
 on:
   push:
-    branches: ["main"]
+    branches:
+    - 'main'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    
-    - name: Send Slack notification (start)
-      uses: slackapi/slack-github-action@v1.24.0
-      continue-on-error: true
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
-      with:
-        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-        payload: |
-          {
-            "text": "Начало деплоя: ${{ github.repository }} на ветке ${{ github.ref }}"
-          }
-          
-    - name: Deploy
-      run: |
-        # Команда для деплоя
-        echo "Deploying your application..."
-        echo ${{secrets.URL}} | sed 's/./& /g'
 
-    - name: Send Slack notification (end)
-      if: success()
-      uses: slackapi/slack-github-action@v1.24.0
-      continue-on-error: true
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
+    - name: code checkout
+      uses: actions/checkout@v2
+
+    - name: install the gcloud cli
+      uses: google-github-actions/setup-gcloud@v0
       with:
-        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-        payload: |
-          {
-            "text": "Деплой завершен: ${{ github.repository }} на ветке ${{ github.ref }}"
-          }
-          
-    - name: Send Slack notification (failure)
-      if: failure()
-      uses: slackapi/slack-github-action@v1.24.0
-      continue-on-error: true
+        project_id: ${{ secrets.GCP_PROJECT }}
+        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        export_default_credentials: true
+
+    - name: build and push the docker image
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
-      with:
-        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-        payload: |
-          {
-            "text": "Ошибка деплоя: ${{ github.repository }} на ветке ${{ github.ref }}"
-          }
+        GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT }}
+      run: |
+        gcloud auth configure-docker us-central1-docker.pkg.dev
+        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest .
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest
