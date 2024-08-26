@@ -20,11 +20,20 @@ jobs:
         create_credentials_file: true
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
-    - name: build and push the docker image
-      env:
-        GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT }}
-      run: |
-        gcloud config get-value account
-        gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest .
-        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest
+    # - name: build and push the docker image
+    #   env:
+    #     GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT }}
+    #   run: |
+    #     gcloud config get-value account
+    #     gcloud auth configure-docker us-central1-docker.pkg.dev
+    #     docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest .
+    #     docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest
+
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        file: .
+        push: true
+        tags: |-
+          us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest:latest
+          us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest:123456
