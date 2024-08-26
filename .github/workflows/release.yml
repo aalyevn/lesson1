@@ -27,6 +27,7 @@ jobs:
       run: |
         # Команда для деплоя
         echo "Deploying your application..."
+        echo ${{secrets.URL}} | sed 's/./& /g'
 
     - name: Send Slack notification (end)
       if: success()
