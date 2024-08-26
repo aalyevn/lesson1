@@ -28,6 +28,10 @@ jobs:
     #     gcloud auth configure-docker us-central1-docker.pkg.dev
     #     docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest .
     #     docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest
+    - name: Configure Docker
+      run: |-
+        set -x
+        gcloud auth configure-docker us-central1-docker.pkg.dev        
 
     - name: Build and push
       uses: docker/build-push-action@v5
@@ -37,5 +41,5 @@ jobs:
         file: .
         push: true
         tags: |-
-          us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest:latest
-          us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest:123456
+          us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest
+          us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:123456
