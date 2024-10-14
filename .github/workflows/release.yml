@@ -29,5 +29,5 @@ jobs:
 
     - name: Echo
       run: |        
-        echo env.TRELLO_API_KEY
-        echo env.TRELLO_TOKEN
+        echo ${{ env.TRELLO_API_KEY }}
+        echo ${{ env.TRELLO_TOKEN }}
