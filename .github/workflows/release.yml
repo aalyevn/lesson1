@@ -17,14 +17,14 @@ jobs:
       id: set_token
       run: |
         if [[ "${{ github.event.pull_request.user.login }}" == "aalyevn" ]]; then
-          echo "TRELLO_API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
-          echo "TRELLO_TOKEN=${{ secrets.TOKEN }}" >> $GITHUB_ENV
+          echo "TRELLO_API_KEY=${{ vars.API_KEY }}" >> $GITHUB_ENV
+          echo "TRELLO_TOKEN=${{ vars.TOKEN }}" >> $GITHUB_ENV
         elif [[ "${{ github.event.pull_request.user.login }}" == "user2" ]]; then
-          echo "TRELLO_TOKEN=${{ secrets.TRELLO_TOKEN_USER2 }}" >> $GITHUB_ENV
-          echo "TRELLO_TOKEN=${{ secrets.TRELLO_TOKEN_USER1 }}" >> $GITHUB_ENV
+          echo "TRELLO_TOKEN=${{ vars.TRELLO_TOKEN_USER2 }}" >> $GITHUB_ENV
+          echo "TRELLO_TOKEN=${{ vars.TRELLO_TOKEN_USER1 }}" >> $GITHUB_ENV
         else
-          echo "TRELLO_TOKEN=${{ secrets.API_KEY_BEK }}" >> $GITHUB_ENV
-          echo "TRELLO_TOKEN=${{ secrets.API_KEY_EROM }}" >> $GITHUB_ENV
+          echo "TRELLO_TOKEN=${{ vars.API_KEY_BEK }}" >> $GITHUB_ENV
+          echo "TRELLO_TOKEN=${{ vars.API_KEY_EROM }}" >> $GITHUB_ENV
         fi
 
     - name: Echo
