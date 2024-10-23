@@ -1,0 +1,22 @@
+name: Manage Alerts
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Choose alerts: enable or disable'
+        default: 'enable'
+        type: string
+
+jobs:
+  manage_alerts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Шаг для включения alerts
+      - name: Enable alerts
+        run: |-
+          echo "Hello ${{ inputs.name }}"
+          # ваш код для включения
