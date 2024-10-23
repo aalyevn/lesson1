@@ -17,14 +17,14 @@ jobs:
 
       # Шаг для включения alerts
       - name: Enable alerts
-        if: ${{ github.event.inputs.alerts == 'enable' }}
+        if: ${{ inputs.alerts == 'enable' }}
         run: |-
           echo "Enabling alerts..."
           # ваш код для включения
 
       # Шаг для выключения alerts
       - name: Disable alerts
-        if: ${{ github.event.inputs.alerts == 'disable' }}
+        if: ${{ inputs.alerts == 'disable' }}
         run: |-
           echo "Disabling alerts..."
           # ваш код для выключения
