@@ -18,13 +18,6 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       name: "development" 
-  
-  enable-dev:
-    name: Enable alerts dev
-    needs: [build, dev]
-    uses: ./.github/workflows/alerts.yml
-    with:
-      alerts: "disable"
 
   staging:
     name: deploy staging
@@ -33,12 +26,15 @@ jobs:
     with:
       name: "staging"
 
-  enable-staging:
-    name: Enable alerts staging
-    needs: [staging]
-    uses: ./.github/workflows/alerts.yml
+  staging_wait:
+    name: wait staging
+    needs: [staging]  # Ждем завершения staging
+    uses: ./.github/workflows/test.yml
     with:
-      alerts: "enable"
+      name: "staging"
+    strategy:
+      matrix:
+        job: [manage_alerts1]
 
   training:
     name: deploy training
@@ -46,11 +42,14 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       name: "training"
-      
-  enable-training:
-    name: Enable alerts training
-    needs: [training]
-    uses: ./.github/workflows/alerts.yml
+
+  training_wait:
+    name: wait training
+    needs: [training]  # Ждем завершения training
+    uses: ./.github/workflows/test.yml
     with:
-      alerts: "enable"      
+      name: "training"
+    strategy:
+      matrix:
+        job: [manage_alerts1]
   
