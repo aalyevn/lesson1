@@ -1,7 +1,7 @@
 name: Manage Alerts
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       alerts:
         description: 'Choose alerts: enable or disable'
