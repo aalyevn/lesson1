@@ -20,3 +20,16 @@ jobs:
         run: |-
           echo "Hello ${{ inputs.name }}"
           # ваш код для включения
+
+  manage_alerts1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Шаг для включения alerts
+      - name: Enable alerts
+        run: |-
+          echo "Hello ${{ inputs.name }}"
+          sleep 60
+          # ваш код для включения
