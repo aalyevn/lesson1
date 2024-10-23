@@ -7,35 +7,50 @@ on:
 
 jobs:
   build:
-    name: Test
+    name: build
     uses: ./.github/workflows/test.yml
     with:
       name: "Aalyev"
 
   dev:
-    name: Enable alerts
+    name: deploy dev
     needs: [build]
-    uses: ./.github/workflows/alerts.yml
+    uses: ./.github/workflows/test.yml
     with:
-      alerts: "enable" 
+      name: "development" 
   
   enable-dev:
-    name: Disable
+    name: Enable alerts dev
     needs: [build, dev]
     uses: ./.github/workflows/alerts.yml
     with:
       alerts: "disable"
 
   staging:
-    name: Test
+    name: deploy staging
     needs: [dev]
     uses: ./.github/workflows/test.yml
     with:
-      name: "Aalyev"
+      name: "staging"
 
   enable-staging:
-    name: Test
+    name: Enable alerts staging
+    needs: [staging]
+    uses: ./.github/workflows/alerts.yml
+    with:
+      alerts: "enable"
+
+  training:
+    name: deploy training
     needs: [staging]
     uses: ./.github/workflows/test.yml
     with:
-      name: "Aalyev"
+      name: "training"
+      
+  enable-training:
+    name: Enable alerts training
+    needs: [training]
+    uses: ./.github/workflows/alerts.yml
+    with:
+      alerts: "enable"      
+  
