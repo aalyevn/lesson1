@@ -6,22 +6,36 @@ on:
     - 'main'
 
 jobs:
-  test:
+  build:
     name: Test
     uses: ./.github/workflows/test.yml
     with:
       name: "Aalyev"
 
-  deploy:
+  dev:
     name: Enable alerts
-    needs: [test]
+    needs: [build]
     uses: ./.github/workflows/alerts.yml
     with:
       alerts: "enable" 
   
-  disable:
+  enable-dev:
     name: Disable
-    needs: [test, deploy]
+    needs: [build, dev]
     uses: ./.github/workflows/alerts.yml
     with:
       alerts: "disable"
+
+  staging:
+    name: Test
+    needs: [dev]
+    uses: ./.github/workflows/test.yml
+    with:
+      name: "Aalyev"
+
+  enable-staging:
+    name: Test
+    needs: [staging]
+    uses: ./.github/workflows/test.yml
+    with:
+      name: "Aalyev"
