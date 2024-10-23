@@ -1,8 +1,9 @@
 name: Deploy Nginx
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  push:
+    branches:
+    - 'main'
 
 jobs:
   test:
