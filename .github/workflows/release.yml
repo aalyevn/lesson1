@@ -41,3 +41,7 @@ jobs:
         push: true
         tags: |-
           us-central1-docker.pkg.dev/method-global/docker-images/nginx:latest       
+        cache-from: |-
+          type=local,compression=gzip,compression-level=5,src=/tmp/docker-cache
+        cache-to: |-
+          type=local,compression=gzip,compression-level=5,dest=/tmp/docker-cache
