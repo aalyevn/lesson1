@@ -6,50 +6,30 @@ on:
     - 'main'
 
 jobs:
-  build:
-    name: build
-    uses: ./.github/workflows/test.yml
-    with:
-      name: "Aalyev"
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
 
-  dev:
-    name: deploy dev
-    needs: [build]
-    uses: ./.github/workflows/test.yml
-    with:
-      name: "development" 
+    - name: code checkout
+      uses: actions/checkout@v2
 
-  staging:
-    name: deploy staging
-    needs: [dev]
-    uses: ./.github/workflows/test.yml
-    with:
-      name: "staging"
-
-  staging_wait:
-    name: wait staging
-    needs: [staging]  # Ждем завершения staging
-    uses: ./.github/workflows/test.yml
-    with:
-      name: "staging"
-    strategy:
-      matrix:
-        job: [manage_alerts1]
-
-  training:
-    name: deploy training
-    needs: [staging]
-    uses: ./.github/workflows/test.yml
-    with:
-      name: "training"
-
-  training_wait:
-    name: wait training
-    needs: [training]  # Ждем завершения training
-    uses: ./.github/workflows/test.yml
-    with:
-      name: "training"
-    strategy:
-      matrix:
-        job: [manage_alerts1]
-  
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        create_credentials_file: true
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+    # - name: build and push the docker image
+    #   env:
+    #     GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT }}
+    #   run: |
+    #     gcloud config get-value account
+    #     gcloud auth configure-docker us-central1-docker.pkg.dev
+    #     docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest .
+    #     docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest
+    - name: Configure Docker
+      run: |-
+        set -x
+        registry=$(echo '${{ secrets.PRIVATE_REGISTRY }}' | awk -F/ '{print $1}') 
+        gcloud auth configure-docker $registry -q
