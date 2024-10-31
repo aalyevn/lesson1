@@ -50,3 +50,16 @@ jobs:
       env:
         DEVELOPMENT: "${{ vars.WEB_ENV_DEVELOPMENT }}"
       run: echo $DEVELOPMENT
+
+    - name: download setsubs
+      run: |-
+        set -x
+        wget https://github.com/DawnBreather/envsubst/releases/download/v0.0.2/setsubst.linux.amd64
+        mv setsubst.linux.amd64 setsubst
+        chmod +x setsubst
+
+    - name: set env
+      run: |-
+        set -x
+        ./setsubst -s DEVELOPMENT config.yaml
+        cat config.yaml
