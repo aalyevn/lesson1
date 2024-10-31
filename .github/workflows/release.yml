@@ -34,14 +34,19 @@ jobs:
         registry=$(echo '${{ secrets.PRIVATE_REGISTRY }}' | awk -F/ '{print $1}') 
         gcloud auth configure-docker $registry -q
 
-    - name: Build and push
-      uses: docker/build-push-action@v5      
-      with:
-        file: Dockerfile
-        push: true
-        tags: |-
-          us-central1-docker.pkg.dev/method-global/docker-images/nginx:latest       
-        cache-from: |-
-          type=local,compression=gzip,compression-level=5,src=/tmp/docker-cache
-        cache-to: |-
-          type=local,compression=gzip,compression-level=5,dest=/tmp/docker-cache
+    # - name: Build and push
+    #   uses: docker/build-push-action@v5      
+    #   with:
+    #     file: Dockerfile
+    #     push: true
+    #     tags: |-
+    #       us-central1-docker.pkg.dev/method-global/docker-images/nginx:latest       
+    #     cache-from: |-
+    #       type=local,compression=gzip,compression-level=5,src=/tmp/docker-cache
+    #     cache-to: |-
+    #       type=local,compression=gzip,compression-level=5,dest=/tmp/docker-cache
+
+    - name: testing
+      env:
+        DEVELOPMENT: "${{ vars.WEB_ENV_DEVELOPMENT }}"
+      run: echo $DEVELOPMENT
