@@ -59,6 +59,8 @@ jobs:
         chmod +x setsubst
 
     - name: set env
+      env:
+        DEVELOPMENT: "${{ vars.WEB_ENV_DEVELOPMENT }}"    
       run: |-
         set -x
         ./setsubst -s DEVELOPMENT config.yaml
