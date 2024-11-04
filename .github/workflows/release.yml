@@ -64,3 +64,11 @@ jobs:
         echo "DEVOPS_ENV_API_URL: $DEVOPS_ENV_API_URL"
         echo "DEVOPS_ENV_NODE_ENV: $DEVOPS_ENV_NODE_ENV"
         echo "DEVOPS_ENV_REDASH_BACKEND: $DEVOPS_ENV_REDASH_BACKEND"
+
+    - name: Print full repository name
+      run: echo "Full repository name ${{ github.repository }}"
+      
+    - name: Extract repository name
+      run: |
+        REPO_NAME=$(echo "${{ github.repository##*/ }}")
+        echo "Repository name: $REPO_NAME"        
