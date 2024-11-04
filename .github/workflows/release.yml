@@ -53,8 +53,8 @@ jobs:
 
     - name: Load environment variables from secret
       run: |
-        echo "${{ secrets.DEVELOPMENT }}"
-        echo "${{ secrets.DEVELOPMENT }}" > .env
+        echo "${{ vars.WEB_ENV_DEVELOPMENT }}"
+        echo "${{ vars.WEB_ENV_DEVELOPMENT }}" > .env
         set -a  # Automatically export all variables
         source .env
         set +a      
