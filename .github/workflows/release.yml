@@ -70,5 +70,5 @@ jobs:
       
     - name: Extract repository name
       run: |
-        REPO_NAME=$(echo "${{ github.repository##*/ }}")
+        REPO_NAME=$(basename "${{ github.repository }}")
         echo "Repository name: $REPO_NAME"        
