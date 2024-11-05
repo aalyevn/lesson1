@@ -51,24 +51,16 @@ jobs:
         DEVELOPMENT: "${{ vars.WEB_ENV_DEVELOPMENT }}"
       run: echo $DEVELOPMENT
 
-    - name: Load environment variables from secret
-      run: |
-        echo "${{ vars.WEB_ENV_DEVELOPMENT }}"
-        echo "${{ vars.WEB_ENV_DEVELOPMENT }}" > .env
-        set -a  # Automatically export all variables
-        source .env
-        set +a      
-
-    - name: Verify environment variables
-      run: |
-        echo "DEVOPS_ENV_API_URL: $DEVOPS_ENV_API_URL"
-        echo "DEVOPS_ENV_NODE_ENV: $DEVOPS_ENV_NODE_ENV"
-        echo "DEVOPS_ENV_REDASH_BACKEND: $DEVOPS_ENV_REDASH_BACKEND"
-
-    - name: Print full repository name
-      run: echo "Full repository name ${{ github.repository }}"
-      
-    - name: Extract repository name
-      run: |
-        REPO_NAME=$(basename "${{ github.repository }}")
-        echo "Repository name: $REPO_NAME"        
+    - name: download setsubs
+      run: |-
+        set -x
+        wget https://github.com/DawnBreather/envsubst/releases/download/v0.0.4/setsubst.linux.amd64
+        mv setsubst.linux.amd64 setsubst
+        chmod +x setsubst
+    - name: set env
+      env:
+        DEVELOPMENT: "${{ vars.WEB_ENV_DEVELOPMENT }}"    
+      run: |-
+        set -x
+        ./setsubst -s DEVELOPMENT config.yaml
+        cat config.yaml
