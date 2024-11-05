@@ -1,5 +1,5 @@
 import constants from './constants'
 
-const MODE = '{{DEVOPS_ENV_NODE_ENV}}';
+const MODE = 'DEVOPS_ENV_NODE_ENV';
 const localBasePath = 'http://localhost:8080'
-const basePath = MODE.toString() === 'prod' ? '{{DEVOPS_ENV_API_URL}}' : localBasePath;
+const basePath = MODE.toString() === 'prod' ? 'DEVOPS_ENV_API_URL' : localBasePath;
