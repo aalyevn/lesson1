@@ -54,7 +54,7 @@ jobs:
     - name: download envsubst
       run: |-
         set -x
-        wget https://github.com/DawnBreather/envsubst/releases/download/v0.0.4/envsubst.linux.amd64
+        wget https://github.com/DawnBreather/envsubst/releases/download/v0.0.5/envsubst.linux.amd64
         mv envsubst.linux.amd64 envsubst
         chmod +x envsubst
         
