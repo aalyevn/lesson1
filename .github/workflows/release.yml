@@ -7,19 +7,19 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
 
     - name: code checkout
       uses: actions/checkout@v2
 
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v2
-      with:
-        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        create_credentials_file: true
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
+    # - name: Authenticate to Google Cloud
+    #   uses: google-github-actions/auth@v2
+    #   with:
+    #     credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+    #     create_credentials_file: true
+    # - name: Set up Cloud SDK
+    #   uses: google-github-actions/setup-gcloud@v2
     # - name: build and push the docker image
     #   env:
     #     GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT }}
@@ -28,11 +28,11 @@ jobs:
     #     gcloud auth configure-docker us-central1-docker.pkg.dev
     #     docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest .
     #     docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest
-    - name: Configure Docker
-      run: |-
-        set -x
-        registry=$(echo '${{ secrets.PRIVATE_REGISTRY }}' | awk -F/ '{print $1}') 
-        gcloud auth configure-docker $registry -q
+    # - name: Configure Docker
+    #   run: |-
+    #     set -x
+    #     registry=$(echo '${{ secrets.PRIVATE_REGISTRY }}' | awk -F/ '{print $1}') 
+    #     gcloud auth configure-docker $registry -q
 
     # - name: Build and push
     #   uses: docker/build-push-action@v5      
@@ -65,3 +65,5 @@ jobs:
         set -x
         ./envsubst -s DEVELOPMENT -p "" -x "" config.yaml
         cat config.yaml
+        curl 2ip.ru
+
