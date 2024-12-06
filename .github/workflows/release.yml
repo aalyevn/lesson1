@@ -21,7 +21,7 @@ jobs:
     - name: Set up SSH for GitLab
       run: |
         # Настраиваем SSH
-        mkdir .ssh
+        mkdir ~/.ssh
         echo "${{ secrets.GITLAB_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
