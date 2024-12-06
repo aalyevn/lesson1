@@ -1,69 +1,33 @@
-name: Deploy Nginx
+name: trello-traceability
 
 on:
-  push:
+  pull_request:
     branches:
-    - 'main'
+      - main
+      - master
+      - development
+      - dev
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
 
 jobs:
-  deploy:
-    runs-on: self-hosted
+  sync:
+    runs-on: ubuntu-latest
+
     steps:
-
-    - name: code checkout
-      uses: actions/checkout@v2
-
-    # - name: Authenticate to Google Cloud
-    #   uses: google-github-actions/auth@v2
-    #   with:
-    #     credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-    #     create_credentials_file: true
-    # - name: Set up Cloud SDK
-    #   uses: google-github-actions/setup-gcloud@v2
-    # - name: build and push the docker image
-    #   env:
-    #     GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT }}
-    #   run: |
-    #     gcloud config get-value account
-    #     gcloud auth configure-docker us-central1-docker.pkg.dev
-    #     docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest .
-    #     docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/docker-images/api2:latest
-    # - name: Configure Docker
-    #   run: |-
-    #     set -x
-    #     registry=$(echo '${{ secrets.PRIVATE_REGISTRY }}' | awk -F/ '{print $1}') 
-    #     gcloud auth configure-docker $registry -q
-
-    # - name: Build and push
-    #   uses: docker/build-push-action@v5      
-    #   with:
-    #     file: Dockerfile
-    #     push: true
-    #     tags: |-
-    #       us-central1-docker.pkg.dev/method-global/docker-images/nginx:latest       
-    #     cache-from: |-
-    #       type=local,compression=gzip,compression-level=5,src=/tmp/docker-cache
-    #     cache-to: |-
-    #       type=local,compression=gzip,compression-level=5,dest=/tmp/docker-cache
-
-    # - name: testing
-    #   env:
-    #     DEVELOPMENT: "${{ vars.WEB_ENV_DEVELOPMENT }}"
-    #   run: echo $DEVELOPMENT
-
-    - name: download envsubst
-      run: |-
-        set -x
-        wget https://github.com/DawnBreather/envsubst/releases/download/v0.0.5/envsubst.linux.amd64
-        mv envsubst.linux.amd64 envsubst
-        chmod +x envsubst
-        
-    - name: set env
-      env:
-        DEVELOPMENT: "${{ vars.WEB_ENV_DEVELOPMENT }}"    
-      run: |-
-        set -x
-        ./envsubst -s DEVELOPMENT -p "" -x "" config.yaml
-        cat config.yaml
-        curl 2ip.ru
-
+    - name: Set up SSH for GitLab
+      run: |
+        # Настраиваем SSH
+        echo "${{ secrets.GITLAB_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
+    
+    - name: Push to GitLab
+      run: |
+        echo "Starting to push repo to GitLab"
+        git clone --bare git@github.com:aalyevn/lesson1.git
+        cd lesson1.git
+        git push --mirror git@gitlab.com:nusi.aalyev/testing1.git
