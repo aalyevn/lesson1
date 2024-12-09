@@ -9,33 +9,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-      with: 
-        fetch-depth: 0
+      - name: view folder
+        run: ls -la
+    # - name: Checkout Repository
+    #   uses: actions/checkout@v2
+    #   with: 
+    #     fetch-depth: 0
 
-    - name: Set up SSH for GitLab
-      run: |
-        # Настраиваем SSH
-        mkdir ~/.ssh
-        echo "${{ secrets.GITLAB_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
-
-    - name: Temporarily remove .github folder
-      run: |
-        echo "Removing .github folder temporarily"
-        git rm -r --cached .github
-        rm -rf .github
-
-    # - name: Push to GitLab
+    # - name: Set up SSH for GitLab
     #   run: |
-    #     echo "Starting to push repo to GitLab"
-    #     git clone --bare git@github.com:aalyevn/lesson1.git
-    #     cd lesson1.git
-    #     git push --mirror git@gitlab.com:nusi.aalyev/testing1.git
+    #     # Настраиваем SSH
+    #     mkdir ~/.ssh
+    #     echo "${{ secrets.GITLAB_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+    #     chmod 600 ~/.ssh/id_rsa
+    #     ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
 
-    - name: Push to GitLab using the latest commit
-      run: |
-        echo "Pushing to GitLab without .github folder"
-        git push -f git@gitlab.com:nusi.aalyev/testing1.git main
+    # - name: Temporarily remove .github folder
+    #   run: |
+    #     echo "Removing .github folder temporarily"
+    #     git rm -r --cached .github
+    #     rm -rf .github
+
+    # # - name: Push to GitLab
+    # #   run: |
+    # #     echo "Starting to push repo to GitLab"
+    # #     git clone --bare git@github.com:aalyevn/lesson1.git
+    # #     cd lesson1.git
+    # #     git push --mirror git@gitlab.com:nusi.aalyev/testing1.git
+
+    # - name: Push to GitLab using the latest commit
+    #   run: |
+    #     echo "Pushing to GitLab without .github folder"
+    #     git push -f git@gitlab.com:nusi.aalyev/testing1.git main
