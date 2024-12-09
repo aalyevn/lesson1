@@ -9,12 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: view folder
-        run: ls -la
-    # - name: Checkout Repository
-    #   uses: actions/checkout@v2
-    #   with: 
-    #     fetch-depth: 0
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with: 
+        fetch-depth: 0
+
+    - name: view folder
+      run: ls -la        
 
     # - name: Set up SSH for GitLab
     #   run: |
