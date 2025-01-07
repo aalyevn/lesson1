@@ -1,0 +1,13 @@
+name: Push to Gitlab
+
+on:
+  workflow_call:
+  
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Push to GitLab
+      run: |
+        echo "Starting to push repo to GitLab"  
