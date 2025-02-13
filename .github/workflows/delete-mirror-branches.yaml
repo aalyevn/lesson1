@@ -21,8 +21,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            set -x
-            echo '${{ inputs.branch_name }}'
             try {
               await github.rest.git.deleteRef({
                 owner: context.repo.owner,
