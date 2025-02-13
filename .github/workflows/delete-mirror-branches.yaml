@@ -22,21 +22,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branchName = "${{ inputs.branch_name }}";
+            const { repo, owner } = context.repo;
+            const ref = `heads/${branchName}`;
+            const deleteParams = { owner, repo, ref };
 
-            console.log(`Deleting branch: ${branchName}`);
-
-            if (!branchName) {
-              throw new Error("Branch name is empty or undefined.");
-            }
-
+            console.log(`Deleting branch: "${ref}"`);
             try {
-              await github.rest.git.deleteRef({
-                owner: context.repo.owner,
-                repo: context.repo.name,
-                ref: `heads/${branchName}`
-              });
-              console.log(`Successfully deleted branch: ${branchName}`);
-            } catch (error) {
-              console.error(`Error deleting branch ${branchName}:`, error);
-              core.setFailed(error.message);
+              github.rest.git.deleteRef(deleteParams);
+            } catch(e) {
+              console.log("Cannot delete branch; error:", e);
             }
