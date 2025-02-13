@@ -1,5 +1,8 @@
 name: Delete Mirror Branches Reusable Workflow
 
+permissions:
+  contents: write
+
 on:
   workflow_call:
     inputs:
