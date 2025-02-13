@@ -22,7 +22,7 @@ jobs:
       - name: Delete mirror branch
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branchName = "${{ inputs.branch_name }}";
             const { repo, owner } = context.repo;
