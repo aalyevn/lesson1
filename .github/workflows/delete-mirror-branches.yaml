@@ -11,6 +11,8 @@ on:
 jobs:
   delete-branch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write      
     if: |
       startsWith(inputs.branch_name, 'mirror/') &&
       (contains(inputs.branch_name, '/hotfix') || contains(inputs.branch_name, '/bugfix'))
