@@ -1,0 +1,14 @@
+name: Delete Mirror Branches Caller
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - 'main'
+      - 'development'
+
+jobs:
+  call-delete-branch:
+    uses: aalyevn/lesson1/.github/workflows/delete-mirror-branches.yaml@main
+    with:
+      branch_name: ${{ github.head_ref }}

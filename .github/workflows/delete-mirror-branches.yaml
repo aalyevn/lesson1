@@ -1,0 +1,34 @@
+name: Delete Mirror Branches Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      branch_name:
+        required: true
+        type: string
+        description: "Name of the branch to delete"
+
+jobs:
+  delete-branch:
+    runs-on: ubuntu-latest
+    if: |
+      startsWith(inputs.branch_name, 'mirror/') &&
+      (contains(inputs.branch_name, '/hotfix') || contains(inputs.branch_name, '/bugfix'))
+
+    steps:
+      - name: Delete mirror branch
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.name,
+                ref: `heads/${inputs.branch_name}`
+              });
+              console.log(`Successfully deleted branch: ${inputs.branch_name}`);
+            } catch (error) {
+              console.error(`Error deleting branch ${inputs.branch_name}:`, error);
+              core.setFailed(error.message);
+            }
