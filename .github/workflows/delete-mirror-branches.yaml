@@ -22,15 +22,15 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             set -x
-            echo '${inputs.branch_name}'
+            echo '${{ inputs.branch_name }}'
             try {
               await github.rest.git.deleteRef({
                 owner: context.repo.owner,
                 repo: context.repo.name,
-                ref: `heads/${inputs.branch_name}`
+                ref: `heads/${{ inputs.branch_name }}`
               });
-              console.log(`Successfully deleted branch: ${inputs.branch_name}`);
+              console.log(`Successfully deleted branch: ${{ inputs.branch_name }}`);
             } catch (error) {
-              console.error(`Error deleting branch ${inputs.branch_name}:`, error);
+              console.error(`Error deleting branch ${{ inputs.branch_name }}:`, error);
               core.setFailed(error.message);
             }
