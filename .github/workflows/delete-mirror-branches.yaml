@@ -8,9 +8,6 @@ on:
         type: string
         description: "Name of the branch to delete"
 
-permissions:
-  contents: write
-
 jobs:
   delete-branch:
     runs-on: ubuntu-latest   
