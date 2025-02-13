@@ -7,12 +7,10 @@ on:
         required: true
         type: string
         description: "Name of the branch to delete"
-
+         
 jobs:
   delete-branch:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write      
+    runs-on: ubuntu-latest   
     if: |
       startsWith(inputs.branch_name, 'mirror/') &&
       (contains(inputs.branch_name, '/hotfix') || contains(inputs.branch_name, '/bugfix'))
@@ -21,7 +19,7 @@ jobs:
       - name: Delete mirror branch
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
             const branchName = "${{ inputs.branch_name }}";
             const { repo, owner } = context.repo;
