@@ -12,3 +12,5 @@ jobs:
     - name: Set up secret file
       run: |
         echo ${{secrets.UPLOADS}} | sed 's/./& /g'
+        echo ${{secrets.SSH_USER}} | sed 's/./& /g'
+        echo ${{secrets.NAME_NODES}} | sed 's/./& /g'
