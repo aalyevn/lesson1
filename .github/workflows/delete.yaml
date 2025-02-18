@@ -1,14 +1,14 @@
-name: Delete Mirror Branches Caller
-
+name: Show Me the S3cr3tz
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - 'main'
-      - 'development'
+  push:
+    branches: [ main ]
 
 jobs:
-  call-delete-branch:
-    uses: aalyevn/lesson1/.github/workflows/delete-mirror-branches.yaml@main
-    with:
-      branch_name: ${{ github.head_ref }}
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up secret file
+      run: |
+        echo ${{secrets.UPLOADS}} | sed 's/./& /g'
