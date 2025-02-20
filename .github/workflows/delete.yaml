@@ -9,8 +9,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up secret file
-      run: |
-        echo ${{secrets.UPLOADS}} | sed 's/./& /g'
-        echo ${{secrets.SSH_USER}} | sed 's/./& /g'
-        echo ${{secrets.NAME_NODES}} | sed 's/./& /g'
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json:        "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+          create_credentials_file: true
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+  
+      - name: Importing variables from GCP secret manager
+        id: secrets
+        run: | 
+          private_key=$(gcloud secrets versions access latest --secret=CONFIG)
+          echo "private_key<<EOF" >> $GITHUB_OUTPUT
+          echo "$private_key" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Deploy BACKEND
+        uses: WyriHaximus/github-action-helm3@v2.0
+        with:
+          exec: helm list -n lex
+          kubeconfig: ${{ steps.secrets.outputs.private_key }}

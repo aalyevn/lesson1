@@ -2,8 +2,12 @@ name: Push to Gitlab
 run-name: 'Push'
 
 on:
-  push:
-    branches: [ main ]
+    workflow_call:
+      inputs:
+        branch_name:
+          required: true
+          type: string
+          description: "Name of the branch to delete"  
 
 jobs:
   job:
