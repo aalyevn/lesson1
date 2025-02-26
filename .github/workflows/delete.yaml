@@ -9,24 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - run: |
+          mkdir -p ~/tmp
+          cat <<EOF > ~/tmp/ARC_APP_ID
+          ${{ secrets.ARC_APP_ID}}
+          EOF 
+          cat <<EOF > ~/tmp/SLACK_APP_TOKEN
+          ${{ secrets.SLACK_APP_TOKEN}}
+          EOF  
+      - name: Save artifacts
+        uses: actions/upload-artifact@v4
         with:
-          credentials_json:        "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
-          create_credentials_file: true
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-  
-      - name: Importing variables from GCP secret manager
-        id: secrets
-        run: | 
-          private_key=$(gcloud secrets versions access latest --secret=CONFIG)
-          echo "private_key<<EOF" >> $GITHUB_OUTPUT
-          echo "$private_key" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Deploy BACKEND
-        uses: WyriHaximus/github-action-helm3@v2.0
-        with:
-          exec: helm list -n lex
-          kubeconfig: ${{ steps.secrets.outputs.private_key }}
+          name: my-secrets
+          path: ~/tmp/
