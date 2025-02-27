@@ -14,9 +14,6 @@ jobs:
           cat <<EOF > ~/tmp/ARC_APP_ID
           ${{ secrets.ARC_APP_ID}}
           EOF 
-          cat <<EOF > ~/tmp/SLACK_APP_TOKEN
-          ${{ secrets.SLACK_APP_TOKEN}}
-          EOF  
       - name: Save artifacts
         uses: actions/upload-artifact@v4
         with:
